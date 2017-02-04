@@ -3,6 +3,7 @@ var ReactDOM = require('react-dom');
 var expect = require('expect');
 var $ = require('jQuery');
 var TestUtils = require('react-addons-test-utils');
+
 var Countdown = require('Countdown');
 
 
@@ -26,7 +27,7 @@ describe('Countdown', () => {
     });
   });
 
-  describe('Countdown does not yield negative numbers', () => {
+  describe('Countdown does not yield negative numbers', (done) => {
     it('no negative numbers', () => {
       var countdown = TestUtils.renderIntoDocument(<Countdown/>);
       countdown.handleSetCountdown(1);
@@ -35,6 +36,45 @@ describe('Countdown', () => {
         done();
       }, 3001);
     });
+
+    it('should pause countdown on paused status', () => {
+      var countdown = TestUtils.renderIntoDocument(<Countdown/>);
+      countdown.handleSetCountdown(3);
+      countdown.handleStatusChange('paused');
+
+      setTimeout(() => {
+        expect(countdown.state.count).toBe(3);
+        expect(countdown.state.countdownStatus).toBe('paused');
+        done();
+      }, 1001);
+    });
+
+    it('should clear countdown on stopped status', () => {
+      var countdown = TestUtils.renderIntoDocument(<Countdown/>);
+      countdown.handleSetCountdown(47);
+      countdown.handleStatusChange('stopped');
+
+      setTimeout(() => {
+        expect(countdown.state.count).toBe(0);
+        expect(countdown.stat.countdownStatus).toBe('stopped');
+        done();
+      }, 1001);
+
+    });
+
+    it('should reduce seconds countdown on started status', () => {
+      var countdown = TestUtils.renderIntoDocument(<Countdown/>);
+      countdown.handleSetCountdown(47);
+      countdown.handleStatusChange('started');
+
+      setTimeout(() => {
+        expect(countdown.state.count).toBe(44);
+        expect(countdown.stat.countdownStatus).toBe('started');
+        done();
+      }, 3001);
+
+    });
+
   });
 });
 
