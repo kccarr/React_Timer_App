@@ -24,18 +24,34 @@ describe('Timer', () => {
 
     // test is not working for some reason
 
-  //   describe('timer works after starting', (done) => {
-  //     it('should return 5 seconds 5 seconds later after timer started', () => {
-  //       var timerStart = TestUtils.renderIntoDocument(<Timer/>);
-  //       timerStart.setState({timerStatus: 'started'});
-  //
-  //       setTimeout(() => {
-  //         expect(timerStart.state.timerStatus).toBe('started');
-  //         expect(timerStart.state.count).toBe(5);
-  //         done();
-  //       }, 6001)
-  //     });
-  // });
+    describe('timer works after starting', (done) => {
+      it('should return 5 seconds 5 seconds later after timer started', () => {
+        var timerStart = TestUtils.renderIntoDocument(<Timer/>);
+        timerStart.handleStatusChange('started');
+        expect(timerStart.state.count).toBe(0);
+
+        setTimeout(() => {
+          expect(timerStart.state.timerStatus).toBe('started');
+          expect(timerStart.state.count).toBe(1);
+          done();
+        }, 1001)
+      });
+  });
+
+  describe('timer pauses after state changed to pause by button click', (done) => {
+    it('should pause after timer is paused', () => {
+      var timerStart = TestUtils.renderIntoDocument(<Timer/>);
+      timerStart.setState({count: 10});
+      timerStart.handleStatusChange('started');
+      timerStart.handleStatusChange('paused');
+
+      setTimeout(() => {
+        expect(timerStart.state.timerStatus).toBe('paused');
+        expect(timerStart.state.count).toBe(10);
+        done();
+      }, 1001)
+    });
+});
 
 
 });
