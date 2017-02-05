@@ -38,7 +38,7 @@ describe('Timer', () => {
       });
   });
 
-  describe('timer pauses after state changed to pause by button click', (done) => {
+  describe('timer pauses and stops after state changed to paused or to stopped by button click', (done) => {
     it('should pause after timer is paused', () => {
       var timerStart = TestUtils.renderIntoDocument(<Timer/>);
       timerStart.setState({count: 10});
@@ -48,6 +48,19 @@ describe('Timer', () => {
       setTimeout(() => {
         expect(timerStart.state.timerStatus).toBe('paused');
         expect(timerStart.state.count).toBe(10);
+        done();
+      }, 1001)
+    });
+
+    it('should clear after timer is cleared', () => {
+      var timerStart = TestUtils.renderIntoDocument(<Timer/>);
+      timerStart.setState({count: 10});
+      timerStart.handleStatusChange('started');
+      timerStart.handleStatusChange('stopped');
+
+      setTimeout(() => {
+        expect(timerStart.state.timerStatus).toBe('stopped');
+        expect(timerStart.state.count).toBe(0);
         done();
       }, 1001)
     });
