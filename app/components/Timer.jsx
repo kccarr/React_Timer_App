@@ -53,7 +53,7 @@ var Timer = React.createClass({
 
   render: function() {
     var {count, timerStatus} = this.state;
-    
+
     return (
       <div>
         <h1 className="page-title">Timer App</h1>
@@ -63,5 +63,7 @@ var Timer = React.createClass({
     );
   }
 });
+
+
 
 module.exports = Timer;
